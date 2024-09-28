@@ -1,7 +1,5 @@
 --!strict
 
-local fs = require"@lune/fs"
-local serde = require"@lune/serde"
 local process = require"@lune/process"
 
 local function invertKeyValue(tab: { [any]: any })
@@ -14,7 +12,7 @@ local function invertKeyValue(tab: { [any]: any })
 	return result;
 end
 
-local inverted = invertKeyValue(serde.decode("json", fs.readFile('./lcid.json')))
+local inverted =  invertKeyValue(require'Icid')
 
 local function from(lcidCode: number): string
     return inverted[lcidCode]
@@ -23,7 +21,6 @@ end
 local function replace(str, pattern, replacement:((string) -> string) | string | { [string]: string }?)
     return string.gsub(str, pattern, if replacement then replacement else '')
 end
-
 
 local defaultOptions = {spawn = true};
 local defaultLocale = 'en-US';
@@ -49,6 +46,7 @@ function osLocale.parseLocale(str: string)
 end
 
 function osLocale.getLocale(str: string) 
+    print(str)
     return str and replace(str, '/[.:].*/')
 end
 
@@ -77,7 +75,7 @@ end
 function osLocale.getWinLocale()
 	local stdout = osLocale.getStdOut('wmic', { 'os', 'get', 'locale' });
 	local lcidCode =  tonumber(replace(stdout, 'Locale'), 16) :: number
-
+    
 	return from(lcidCode);
 end
 
@@ -87,8 +85,8 @@ end
 
 local cache = {};
 
-return function(options: { spawn: any }): string
-	options = if options == nil then defaultOptions else options
+return function(options: { spawn: any }?): string
+	local options = if options == nil then defaultOptions else options :: any
     if cache[options.spawn] then 
 		return cache[options.spawn]
     end 
