@@ -46,7 +46,6 @@ function osLocale.parseLocale(str: string)
 end
 
 function osLocale.getLocale(str: string) 
-    print(str)
     return str and replace(str, '/[.:].*/')
 end
 
