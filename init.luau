@@ -84,7 +84,7 @@ end
 
 local cache = {};
 
-return function(options: { spawn: any }?): string
+return function(options: { spawn: boolean }?): string
 	local options = if options == nil then defaultOptions else options :: any
     if cache[options.spawn] then 
 		return cache[options.spawn]
