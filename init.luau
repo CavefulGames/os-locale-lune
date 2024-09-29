@@ -2,27 +2,13 @@
 
 local process = require"@lune/process"
 
-local function invertKeyValue(tab: { [any]: any })
-    local result = {};
-
-    for k, v in tab do
-        result[v] = k;
-    end
-
-	return result;
-end
-
-local inverted =  invertKeyValue(require'Icid')
-
-local function from(lcidCode: number): string
-    return inverted[lcidCode]
-end
+local inverted = require'Icid'
 
 local function replace(str, pattern, replacement:((string) -> string) | string | { [string]: string }?)
     return string.gsub(str, pattern, if replacement then replacement else '')
 end
 
-local defaultOptions = {spawn = true};
+local defaultOptions = true;
 local defaultLocale = 'en-US';
 
 local osLocale = {}
@@ -75,7 +61,7 @@ function osLocale.getWinLocale()
 	local stdout = osLocale.getStdOut('wmic', { 'os', 'get', 'locale' });
 	local lcidCode =  tonumber(replace(stdout, 'Locale'), 16) :: number
     
-	return from(lcidCode);
+	return inverted[lcidCode];
 end
 
 function normalise(input)
@@ -84,17 +70,17 @@ end
 
 local cache = {};
 
-return function(options: { spawn: boolean }?): string
-	local options = if options == nil then defaultOptions else options :: any
-    if cache[options.spawn] then 
-		return cache[options.spawn]
+return function(spawn: boolean?): string
+	spawn = if spawn == nil then defaultOptions else spawn
+    if cache[spawn] then 
+		return cache[spawn]
     end 
 
 	local locale;
 
     local envLocale = osLocale.getEnvLocale() 
 
-    if envLocale or options.spawn == false then
+    if envLocale or spawn == false then
         locale = osLocale.getLocale(envLocale)
     elseif process.os == 'windows' then
         locale = osLocale.getWinLocale()
@@ -105,7 +91,7 @@ return function(options: { spawn: boolean }?): string
     end
 
     local normalised = normalise(locale or defaultLocale);
-	cache[options.spawn] = normalised
+	cache[spawn] = normalised
 
 	return normalised;
 end
