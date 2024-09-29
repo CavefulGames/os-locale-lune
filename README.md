@@ -18,7 +18,7 @@ print(osLocale())
 local osLocale = require'path'
 
 --// spawn (boolean)
-osLocale(spawn: boolean)
+osLocale(spawn: boolean?)
 ```
 
 ## note by os-[locale](https://github.com/sindresorhus/os-locale)
