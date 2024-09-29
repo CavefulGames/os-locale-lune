@@ -40,13 +40,13 @@ function osLocale.parseLocale(str: string)
     local env = process.env
     for k, v in str:split('\n') do
         local result = v.split('=')
-        env[result[1]] = replace(result[2], '/^"|"$/')
+        env[result[1]] = replace(result[2], '^"|"$')
     end
     return osLocale.getEnvLocale(env);
 end
 
 function osLocale.getLocale(str: string) 
-    return str and replace(str, '/[.:].*/')
+    return if str then replace(str, '[.:].*') else nil
 end
 
 function osLocale.getLocales()
@@ -79,7 +79,7 @@ function osLocale.getWinLocale()
 end
 
 function normalise(input)
-	return replace(input, '/_/', '-');
+	return replace(input, '_', '-');
 end
 
 local cache = {};
