@@ -21,4 +21,17 @@ local osLocale = require'path'
 osLocale(spawn: boolean?)
 ```
 
-## note by os-[locale](https://github.com/sindresorhus/os-locale)
+## make a type
+```lua
+local fs = require'@lune/fs'
+local icid = require('Icid')
+local result = 'export type icid = '
+
+for k, v in icid do
+    result = if result ~= '' then `{result} | "{v:gsub('_', '-')}"` else `"{v:gsub('_', '-')}"`
+end
+
+fs.writeFile('type.luau', result)
+```
+
+## note by [os-locale](https://github.com/sindresorhus/os-locale)

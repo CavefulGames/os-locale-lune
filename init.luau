@@ -70,7 +70,7 @@ end
 
 local cache = {};
 
-return function(spawn: boolean?): string
+return function(spawn: boolean?): inverted.icid
 	spawn = if spawn == nil then defaultOptions else spawn
     if cache[spawn] then 
 		return cache[spawn]
@@ -90,10 +90,10 @@ return function(spawn: boolean?): string
         locale = osLocale.getUnixLocale()
     end
 
-    local normalised = normalise(locale or defaultLocale);
+    local normalised = normalise(locale or defaultLocale)
 	cache[spawn] = normalised
 
-	return normalised;
+	return normalised :: inverted.icid
 end
 
  
