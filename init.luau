@@ -4,6 +4,8 @@ local process = require"@lune/process"
 
 local inverted = require'Icid'
 
+export type inverted = inverted.icid
+
 local function replace(str, pattern, replacement:((string) -> string) | string | { [string]: string }?)
     return string.gsub(str, pattern, if replacement then replacement else '')
 end
@@ -70,7 +72,7 @@ end
 
 local cache = {};
 
-return function(spawn: boolean?): inverted.icid
+return function(spawn: boolean?): inverted
 	spawn = if spawn == nil then defaultOptions else spawn
     if cache[spawn] then 
 		return cache[spawn]
@@ -93,7 +95,7 @@ return function(spawn: boolean?): inverted.icid
     local normalised = normalise(locale or defaultLocale)
 	cache[spawn] = normalised
 
-	return normalised :: inverted.icid
+	return normalised :: inverted
 end
 
  

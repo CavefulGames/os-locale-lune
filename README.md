@@ -16,22 +16,10 @@ print(osLocale())
 ## Parameters
 ```lua
 local osLocale = require'path'
+type inverted = osLocale.inverted
 
 --// spawn (boolean)
-osLocale(spawn: boolean?)
-```
-
-## make a type
-```lua
-local fs = require'@lune/fs'
-local icid = require('Icid')
-local result = 'export type icid = '
-
-for k, v in icid do
-    result = if result ~= '' then `{result} | "{v:gsub('_', '-')}"` else `"{v:gsub('_', '-')}"`
-end
-
-fs.writeFile('type.luau', result)
+osLocale(spawn: boolean?): inverted
 ```
 
 ## note by [os-locale](https://github.com/sindresorhus/os-locale)
