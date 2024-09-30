@@ -1,6 +1,6 @@
 --!strict
 
-local osLocale = require'..'
+local osLocale = require("..")
 type inverted = osLocale.inverted
 
 print(osLocale())
