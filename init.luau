@@ -66,7 +66,7 @@ function osLocale.getWinLocale()
 	return inverted[lcidCode]
 end
 
-function normalise(input)
+local function normalise(input)
 	return replace(input, "_", "-")
 end
 
